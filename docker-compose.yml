@@ -1,0 +1,16 @@
+version: '2'
+services:
+  nginx:
+    build:
+      dockerfile: Dockerfile-nginx
+      context: .
+    links:
+    - webapp
+    ports:
+    - "80:80"
+    restart: always
+  webapp:
+    build: .
+    ports:
+    - "8001"
+    restart: always

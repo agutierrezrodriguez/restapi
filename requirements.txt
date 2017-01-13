@@ -1,0 +1,10 @@
+django==1.8
+djangorestframework
+markdown
+django-countries
+gunicorn
+PyYAML
+pylint
+pylint-django
+flake8
+coverage

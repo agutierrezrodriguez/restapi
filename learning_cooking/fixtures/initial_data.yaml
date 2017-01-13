@@ -1,0 +1,43 @@
+- model: learning_cooking.Chef
+  pk: 1
+  fields:
+    name: David Muñoz
+    email: dmunoz@cocina.es
+- model: learning_cooking.Chef
+  pk: 2
+  fields:
+    name: Karlos Arguiñano
+    email: karguinano@cocina.es
+- model: learning_cooking.Student
+  pk: 1
+  fields:
+    name: Pedro
+    surname: Rojas
+    zip: 12345
+    country: ES
+    email: projas@cocina.es
+- model: learning_cooking.Student
+  pk: 2
+  fields:
+    name: Manuel
+    surname: Fernández
+    zip: 25487
+    country: FR
+    email: mfernandez@cocina.es
+- model: learning_cooking.Course
+  pk: 1
+  fields:
+    name: Los mejores postres
+    description: Cocina los mejores postres
+    chef: 1
+- model: learning_cooking.Course
+  pk: 2
+  fields:
+    name: Sorprende en la mesa
+    description: Aprende a cocinar de forma internacional
+    chef: 2
+- model: learning_cooking.Registration
+  pk: 1
+  fields:
+    course: 1
+    student: 1
