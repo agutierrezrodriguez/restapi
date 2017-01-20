@@ -62,8 +62,10 @@ class Registration(models.Model):
     """
     Registration model
     """
-    course = models.ForeignKey(Course, null=False, blank=False)
-    student = models.ForeignKey(Student, null=False, blank=False)
+    course = models.ForeignKey(Course, null=False, blank=False,
+                               related_name='students')
+    student = models.ForeignKey(Student, null=False, blank=False,
+                                related_name='courses')
     register_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __unicode__(self):

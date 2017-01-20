@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'gko6chbcu7k1g6#ytt0p5^k$96m-!+svuroi!#5iu8mn)luu2j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*', ]
 
@@ -107,8 +107,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = '/static/'
 
-import os
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -123,4 +121,11 @@ LOGGING = {
             'level': 'INFO',
         },
     },
+}
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
 }

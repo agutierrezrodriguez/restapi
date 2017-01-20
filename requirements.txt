@@ -1,5 +1,6 @@
 django==1.8
 djangorestframework
+djangorestframework-queryfields
 markdown
 django-countries
 django-health-check

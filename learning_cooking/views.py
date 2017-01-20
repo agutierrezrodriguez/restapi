@@ -5,54 +5,40 @@ Views of learnin_cooking app.
 this module handle RESTful API methods.
 """
 
-from rest_framework import generics, mixins
-from .models import Course, Registration
-from .serializers import CourseListSerializer, CourseDetailSerializer, \
-    RegistrationSerializer
+from rest_framework import viewsets
+from rest_framework.decorators import list_route
+from rest_framework.response import Response
+from .models import Course, Student, Registration
+from .serializers import CourseSerializer, StudentSerializer, \
+    RegistrationSerializer, CourseChefDetailSerializer
 
 
-class CourseListCreate(mixins.ListModelMixin, mixins.CreateModelMixin,
-                       generics.GenericAPIView):
+class CourseViewset(viewsets.ModelViewSet):
     """
-    Class that handle list and create methods of Courses
+    Class that handle restful methods of Courses
     """
-    queryset = Course.objects.all()
-    serializer_class = CourseDetailSerializer
+    queryset = Course.objects.all().select_related('chef')\
+        .prefetch_related('students')
+    serializer_class = CourseSerializer
 
-    def get(self, request, *args, **kwargs):
-        """
-        List method of courses
-        """
-        self.serializer_class = CourseListSerializer
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        """
-        Create method of courses
-        """
-        self.serializer_class = CourseDetailSerializer
-        return self.create(request, *args, **kwargs)
+    @list_route()
+    def email_view(self, request):
+        serializer = CourseChefDetailSerializer(self.queryset, many=True)
+        return Response(serializer.data)
 
 
-class CourseGetUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
+class StudentViewset(viewsets.ModelViewSet):
     """
-    Class that handle get, update and delete methods of Courses
+    Class that handle restful methods of Students
     """
-    queryset = Course.objects.all()
-    serializer_class = CourseDetailSerializer
+    queryset = Student.objects.all().prefetch_related('courses')
+    serializer_class = StudentSerializer
 
 
-class RegistrationListCreate(generics.ListCreateAPIView):
+class RegistrationViewset(viewsets.ModelViewSet):
     """
-    Class that handle list and create methods of Registrations
+    Class that handle restful methods of registrations
     """
-    queryset = Registration.objects.all()
-    serializer_class = RegistrationSerializer
-
-
-class RegistrationGetUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
-    """
-    Class that handle get, update and delete methods of Registrations
-    """
-    queryset = Registration.objects.all()
+    queryset = Registration.objects.all().select_related('course')\
+        .select_related('student')
     serializer_class = RegistrationSerializer

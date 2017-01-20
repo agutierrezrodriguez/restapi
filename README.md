@@ -16,7 +16,7 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py loaddata initial_data
 python manage.py collectstatic
-
+```
 
 Para utilizar docker se necesita docker-compose
 Compilar el proyecto y arrancar.
@@ -35,7 +35,11 @@ docker exec -ti restapi_webapp_1 python manage.py loaddata initial_data
 
 Ya podemos acceder desde la url de acceso al puerto 80.
 
-Las URL son /course/ y /registration/
+Las URL son: 
+/students/
+/courses/
+/courses/email_view/
+/registrations/
 
 # Notas sobre la calidad de código
 

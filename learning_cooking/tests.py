@@ -218,7 +218,7 @@ class CourseViewTestCase(APITestCase):
         """
         Test new course
         """
-        response = self.client.post('/course/', {'name': 'Test course',
+        response = self.client.post('/courses/', {'name': 'Test course',
                                                  'chef': self.chef.id},
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -227,26 +227,27 @@ class CourseViewTestCase(APITestCase):
         """
         Test get course
         """
-        response = self.client.get('/course/%s/' % self.course.id,
+        response = self.client.get('/courses/%s/' % self.course.id,
                                    format='json')
         self.assertEqual(response.data, {"id": 1, "name": "testcourse",
                                          "description": "testcourse",
                                          "start_date": None,
                                          "end_date": None,
-                                         "chef": self.chef.id})
+                                         "chef": self.chef.id,
+                                         "students": []})
 
     def test_list_courses(self):
         """
         Test list course
         """
-        response = self.client.get('/course/', format='json')
+        response = self.client.get('/courses/?fields=id,name', format='json')
         self.assertEqual(response.data, [{"id": 1, "name": "testcourse"}])
 
     def test_put_course(self):
         """
         Test put course
         """
-        response = self.client.put('/course/%s/' % self.course.id,
+        response = self.client.put('/courses/%s/' % self.course.id,
                                    {"id": 1, "name": "testcourse2",
                                     "description": "testcourse2",
                                     "chef": self.chef.id}, format='json')
@@ -254,13 +255,14 @@ class CourseViewTestCase(APITestCase):
                                          "description": "testcourse2",
                                          "start_date": None,
                                          "end_date": None,
-                                         "chef": self.chef.id})
+                                         "chef": self.chef.id,
+                                         "students": []})
 
     def test_delete_course(self):
         """
         Test delete course
         """
-        response = self.client.delete('/course/%s/' % self.course.id)
+        response = self.client.delete('/courses/%s/' % self.course.id)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
@@ -292,7 +294,7 @@ class RegistrationViewTestCase(APITestCase):
         """
         Test get registration
         """
-        response = self.client.get('/registration/%s/' % self.registration.id,
+        response = self.client.get('/registrations/%s/' % self.registration.id,
                                    format='json')
         data = response.data
         data.pop('register_date', None)
@@ -305,7 +307,7 @@ class RegistrationViewTestCase(APITestCase):
         """
         Test list registration
         """
-        response = self.client.get('/registration/', format='json')
+        response = self.client.get('/registrations/', format='json')
         data = response.data[0]
         data.pop('register_date', None)
         self.assertEqual(data,
@@ -317,6 +319,6 @@ class RegistrationViewTestCase(APITestCase):
         """
         Test delete registration
         """
-        response = self.client.delete('/registration/%s/' %
+        response = self.client.delete('/registrations/%s/' %
                                       self.registration.id)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

@@ -4,31 +4,51 @@ Serializer module of RESTfull API
 """
 
 from rest_framework import serializers
-from .models import Course, Registration
+from drf_queryfields import QueryFieldsMixin
+from .models import Course, Registration, Student, Chef
 
 
-class CourseListSerializer(serializers.ModelSerializer):
+class ChefMiniSerializer(serializers.ModelSerializer):
     """
-    List serializer of Course model
+    Serializer of chef email
     """
     class Meta:
-        model = Course
-        fields = ('id', 'name',)
+        model = Chef
+        fields = ('id','email',)
         read_only_fields = ('id',)
 
 
-class CourseDetailSerializer(serializers.ModelSerializer):
+class CourseSerializer(QueryFieldsMixin, serializers.ModelSerializer):
     """
-    Detail serializer of Course model
+    Serializer of Course model
     """
     class Meta:
         model = Course
         fields = ('id', 'name', 'description', 'start_date', 'end_date',
-                  'chef')
-        read_only_fields = ('id',)
+                  'chef', 'students')
+        read_only_fields = ('id', 'students')
 
 
-class RegistrationSerializer(serializers.ModelSerializer):
+class CourseChefDetailSerializer(CourseSerializer):
+    """
+    Serializer for courses list
+    """
+    chef = ChefMiniSerializer()
+
+
+class StudentSerializer(QueryFieldsMixin, serializers.ModelSerializer):
+    """
+    Serializer of Student model
+    """
+    class Meta:
+        model = Student
+        fields = ('id', 'name', 'surname', 'zip', 'country', 'email',
+                  'courses')
+        read_only_fields = ('id', 'courses')
+
+
+
+class RegistrationSerializer(QueryFieldsMixin, serializers.ModelSerializer):
     """
     Serializer of Registration model
     """
@@ -36,3 +56,4 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model = Registration
         fields = ('id', 'course', 'student', 'register_date')
         read_only_fields = ('id',)
+
