@@ -5,12 +5,43 @@ services:
       dockerfile: Dockerfile-nginx
       context: .
     links:
-    - webapp
+      - webapp
     ports:
-    - "80:80"
+      - "80:80"
     restart: always
   webapp:
     build: .
     ports:
-    - "8001"
+      - "8001"
     restart: always
+    links:
+      - dbproxy
+  etcd:
+    image: quay.io/coreos/etcd
+    ports:
+      - "2380:2380"
+      - "2379:2379"
+    command: /usr/local/bin/etcd -advertise-client-urls=http://0.0.0.0:2379 -listen-client-urls=http://0.0.0.0:2379
+  db:
+    build: pxc-57
+    environment:
+      - CLUSTER_NAME=RestAPI
+      - MYSQL_ROOT_PASSWORD=RestAPIExample
+      - DISCOVERY_SERVICE=etcd:2379
+      - XTRABACKUP_PASSWORD=RestRescue
+    links:
+      - etcd
+  dbproxy:
+    build: proxysql
+    environment:
+      - CLUSTER_NAME=RestAPI
+      - MYSQL_ROOT_PASSWORD=RestAPIExample
+      - DISCOVERY_SERVICE=etcd:2379
+      - MYSQL_PROXY_USER=proxyuser
+      - MYSQL_PROXY_PASSWORD=proxypass
+    links:
+      - etcd
+      - db
+    ports:
+      - "3306"
+      - "6032"
