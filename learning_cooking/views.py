@@ -23,6 +23,9 @@ class CourseViewset(viewsets.ModelViewSet):
 
     @list_route()
     def email_view(self, request):
+        """
+        Show detailed chef data for email
+        """
         serializer = CourseChefDetailSerializer(self.queryset, many=True)
         return Response(serializer.data)
 

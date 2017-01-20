@@ -219,7 +219,7 @@ class CourseViewTestCase(APITestCase):
         Test new course
         """
         response = self.client.post('/courses/', {'name': 'Test course',
-                                                 'chef': self.chef.id},
+                                                  'chef': self.chef.id},
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -241,7 +241,22 @@ class CourseViewTestCase(APITestCase):
         Test list course
         """
         response = self.client.get('/courses/?fields=id,name', format='json')
-        self.assertEqual(response.data, [{"id": 1, "name": "testcourse"}])
+        data = response.data
+        result = data["results"][0]
+        self.assertEqual(result, {"id": 1, "name": "testcourse"})
+
+    def test_list_courses_email_view(self):
+        """
+        Test list course email_view
+        """
+        response = self.client.get('/courses/email_view/', format='json')
+        data = response.data[0]
+        self.assertEqual(data, {"id": 1, "name": "testcourse",
+                                "description": "testcourse",
+                                "start_date": None, "end_date": None,
+                                "chef": {"id": 1, "email": "cheftest@email.com"
+                                        },
+                                "students": []})
 
     def test_put_course(self):
         """
@@ -308,7 +323,7 @@ class RegistrationViewTestCase(APITestCase):
         Test list registration
         """
         response = self.client.get('/registrations/', format='json')
-        data = response.data[0]
+        data = response.data["results"][0]
         data.pop('register_date', None)
         self.assertEqual(data,
                          {"id": self.registration.id,

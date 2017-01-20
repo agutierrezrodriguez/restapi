@@ -14,7 +14,7 @@ class ChefMiniSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Chef
-        fields = ('id','email',)
+        fields = ('id', 'email')
         read_only_fields = ('id',)
 
 
@@ -47,7 +47,6 @@ class StudentSerializer(QueryFieldsMixin, serializers.ModelSerializer):
         read_only_fields = ('id', 'courses')
 
 
-
 class RegistrationSerializer(QueryFieldsMixin, serializers.ModelSerializer):
     """
     Serializer of Registration model
@@ -56,4 +55,3 @@ class RegistrationSerializer(QueryFieldsMixin, serializers.ModelSerializer):
         model = Registration
         fields = ('id', 'course', 'student', 'register_date')
         read_only_fields = ('id',)
-
