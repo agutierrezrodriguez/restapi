@@ -2,6 +2,7 @@ django==1.8
 djangorestframework
 markdown
 django-countries
+django-health-check
 gunicorn
 PyYAML
 pylint

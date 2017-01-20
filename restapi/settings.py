@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'gko6chbcu7k1g6#ytt0p5^k$96m-!+svuroi!#5iu8mn)luu2j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*', ]
 
@@ -38,7 +38,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'learning_cooking',
     'django_countries',
-    'rest_framework'
+    'rest_framework',
+    'health_check',
+    'health_check.db'
 )
 
 MIDDLEWARE_CLASSES = (
